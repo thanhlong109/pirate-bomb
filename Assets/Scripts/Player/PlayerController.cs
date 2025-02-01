@@ -8,20 +8,19 @@ public class PlayerController : MonoBehaviour
     [Header("Settings")]
     [SerializeField] private float moveSpeed = 8f;
     [SerializeField] private float jumpForce = 12f;
-    [SerializeField] private float bombCooldown = 1f;
     [SerializeField] private LayerMask groundLayer;
+    [SerializeField] private float bombCooldown = 1f;
 
     [Header("References")]
-    //[SerializeField] private GameObject bombPrefab;
     [SerializeField] private Transform groundCheck;
 
     private Rigidbody2D rb;
-    private float lastBombTime;
     private bool isGrounded;
     private int currentDirection = 1;
     private float moveInput;
     private bool jumpPressed;
     private bool bombPressed;
+    private bool canPlaceBomb = true;
     private Animator animator;
 
     private void Awake()
@@ -33,7 +32,6 @@ public class PlayerController : MonoBehaviour
     private void Update()
     {
         GetInput();
-        //HandleBomb();
         FlipCharacter();
         UpdateAnimations();
     }
@@ -43,6 +41,7 @@ public class PlayerController : MonoBehaviour
         CheckGrounded();
         HandleMovement();
         HandleJump();
+        HandleBomb();
     }
 
     private void GetInput()
@@ -72,14 +71,22 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    //private void HandleBomb()
-    //{
-    //    if (GameInputManager.Instance.IsBombPressed && Time.time > lastBombTime + bombCooldown)
-    //    {
-    //        Instantiate(bombPrefab, transform.position, Quaternion.identity);
-    //        lastBombTime = Time.time;
-    //    }
-    //}
+    private void HandleBomb()
+    {
+        if (bombPressed && canPlaceBomb)
+        {
+            BombPool.Instance.GetBomb(transform.position);
+            bombPressed = false;
+            canPlaceBomb = false;
+            StartCoroutine(ResetBombCooldown());
+        }
+    }
+
+    private IEnumerator ResetBombCooldown()
+    {
+        yield return new WaitForSeconds(bombCooldown);
+        canPlaceBomb = true;
+    }
 
     private void UpdateAnimations()
     {
