@@ -1,4 +1,4 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,9 +10,13 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float jumpForce = 12f;
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private float bombCooldown = 1f;
+    [SerializeField] private float minThrowForce = 0f;
+    [SerializeField] private float maxThrowForce = 10f;
+    [SerializeField] private float chargeTime = 2f;
 
     [Header("References")]
     [SerializeField] private Transform groundCheck;
+    [SerializeField] private GameObject chargeBar;
 
     private Rigidbody2D rb;
     private bool isGrounded;
@@ -22,6 +26,9 @@ public class PlayerController : MonoBehaviour
     private bool bombPressed;
     private bool canPlaceBomb = true;
     private Animator animator;
+
+    private bool isCharging = false;
+    private float chargeTimer = 0f;
 
     private void Awake()
     {
@@ -34,6 +41,13 @@ public class PlayerController : MonoBehaviour
         GetInput();
         FlipCharacter();
         UpdateAnimations();
+        
+        // for count time bomb pressed
+        if (isCharging)
+        {
+            chargeTimer += Time.deltaTime;
+            chargeTimer = Mathf.Clamp(chargeTimer, 0f, chargeTime); 
+        }
     }
 
     private void FixedUpdate()
@@ -75,11 +89,48 @@ public class PlayerController : MonoBehaviour
     {
         if (bombPressed && canPlaceBomb)
         {
-            BombPool.Instance.GetBomb(transform.position);
-            bombPressed = false;
-            canPlaceBomb = false;
-            StartCoroutine(ResetBombCooldown());
+            if (!isCharging)
+            {
+                StartCharging();
+            }
         }
+        else if (!bombPressed && isCharging) 
+        {
+            ThrowBomb();
+        }
+    }
+
+    private void StartCharging()
+    {
+        isCharging = true;
+        chargeTimer = 0f;
+
+        if (chargeBar != null)
+            chargeBar.SetActive(true);
+    }
+
+    private void ThrowBomb()
+    {
+        if (!isCharging) return;
+
+        isCharging = false;
+        canPlaceBomb = false;
+
+        if (chargeBar != null)
+            chargeBar.SetActive(false);
+
+        float throwForce = Mathf.Lerp(minThrowForce, maxThrowForce, chargeTimer / chargeTime);
+
+        Debug.Log(throwForce);
+
+        Vector2 throwDirection = new Vector2(currentDirection, 1).normalized;
+
+        var bomb = BombPool.Instance.GetBomb(transform.position);
+        Rigidbody2D bombRb = bomb.GetComponent<Rigidbody2D>();
+
+        bombRb.AddForce(throwDirection * throwForce, ForceMode2D.Impulse);
+
+        StartCoroutine(ResetBombCooldown());
     }
 
     private IEnumerator ResetBombCooldown()
