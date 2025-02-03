@@ -5,6 +5,7 @@ using UnityEngine;
 [RequireComponent(typeof(BoxCollider2D))]
 public class BombDetector : MonoBehaviour
 {
+    [SerializeField] protected float gapTimeBombDetected = 0.5f;
 
     private PirateNPC NPC;
     private void Start()
@@ -18,6 +19,20 @@ public class BombDetector : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
+        if(NPC.state == NPC_STATES.IDLE)
+        {
+            StartCoroutine(HandleBombWithGap(other));
+        }
+        else
+        {
+            NPC.HandleBomb(other.gameObject);
+        }
+        
+    }
+
+    private IEnumerator HandleBombWithGap(Collider2D other)
+    {
+        yield return new WaitForSeconds(gapTimeBombDetected);
         NPC.HandleBomb(other.gameObject);
     }
 }

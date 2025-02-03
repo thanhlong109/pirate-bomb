@@ -121,8 +121,6 @@ public class PlayerController : MonoBehaviour
 
         float throwForce = Mathf.Lerp(minThrowForce, maxThrowForce, chargeTimer / chargeTime);
 
-        Debug.Log(throwForce);
-
         Vector2 throwDirection = new Vector2(currentDirection, 1).normalized;
 
         var bomb = BombPool.Instance.GetBomb(transform.position);
