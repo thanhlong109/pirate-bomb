@@ -18,17 +18,25 @@ public class Bomb : MonoBehaviour
     [SerializeField] private bool hasExploded = false;  
     private Animator animator;
     private Rigidbody2D rb;
+    private CapsuleCollider2D capsuleCollider;
 
-    void Start()
+    void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
         StartCoroutine(ExplodeAfterDelay());
         animator = GetComponent<Animator>();
+        capsuleCollider = GetComponent<CapsuleCollider2D>();
     }
 
     void OnEnable()
     {
         StartCoroutine(ExplodeAfterDelay());
+            capsuleCollider.enabled = true;
+    }
+
+    private void OnDisable()
+    {
+        capsuleCollider.enabled = false;
     }
 
     IEnumerator ExplodeAfterDelay()
@@ -82,11 +90,17 @@ public class Bomb : MonoBehaviour
             //}
         }
     }
+    public bool IsExploded() => hasExploded;
 
     void ReturnToPool()
     {
         hasExploded = false;
         BombPool.Instance.ReturnBomb(gameObject);
+    }
+
+    public void AddForce(Vector2 force)
+    {
+        rb.AddForce(force);
     }
 
 

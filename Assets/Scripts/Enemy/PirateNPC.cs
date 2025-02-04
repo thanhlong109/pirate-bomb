@@ -5,15 +5,30 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 public abstract class PirateNPC : MonoBehaviour
 {
-    [SerializeField] protected float moveSpeed = 1f;
-    
+    [SerializeField] protected PirateNPCData NPCData;
+    [SerializeField] private GameObject surpriseSign;
+    [SerializeField] public float surpriseTime = 0.25f;
+    [SerializeField] public Vector2 surpriseOffset;
 
-    private Rigidbody2D rb;
+    protected Rigidbody2D rb;
     public NPC_STATES state = NPC_STATES.IDLE;
     private GameObject bombDetected;
     private System.Action onReachBomb;
     private Animator animator;
+    private int currentDirection = 1;
+    
     public abstract void HandleBomb(GameObject bomb);
+    public void ShowSurprise()
+    {
+        surpriseSign.transform.position = new Vector3(transform.position.x + surpriseOffset.x, transform.position.y + surpriseOffset.y);
+        surpriseSign.SetActive(true);
+        StartCoroutine(HideSurprise());
+    }
+    IEnumerator HideSurprise()
+    {
+        yield return new WaitForSeconds(surpriseTime);
+        surpriseSign.SetActive(false);
+    }
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -23,6 +38,7 @@ public abstract class PirateNPC : MonoBehaviour
     private void Update()
     {
         UpdateAnimations();
+        FlipCharacter();
     }
 
     private void UpdateAnimations()
@@ -58,7 +74,7 @@ public abstract class PirateNPC : MonoBehaviour
         if (distance > 0.1f)
         {
             float direction = Mathf.Sign(bombDetected.transform.position.x - transform.position.x);
-            rb.velocity = new Vector2(direction * moveSpeed, rb.velocity.y);
+            rb.velocity = new Vector2(direction * NPCData.Speed, rb.velocity.y);
         }
         else
         {
@@ -66,6 +82,23 @@ public abstract class PirateNPC : MonoBehaviour
             onReachBomb.Invoke();
             state = NPC_STATES.IDLE;
         }
+    }
+
+    private void FlipCharacter()
+    {
+        float direction = rb.velocity.x;
+        if (direction * currentDirection < 0)
+        {
+            Flip();
+        }
+    }
+
+    private void Flip()
+    {
+        Vector3 scale = transform.localScale;
+        scale.x *= -1;
+        currentDirection *= -1;
+        transform.localScale = scale;
     }
 
 }
