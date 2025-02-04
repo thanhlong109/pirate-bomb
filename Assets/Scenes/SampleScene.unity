@@ -2165,7 +2165,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 3.03
+  orthographic size: 4.06
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -2190,7 +2190,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.0000002682209, y: -0.00000017881393, z: -10}
+  m_LocalPosition: {x: 0.0000004172325, y: -0.00000023841858, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2242,7 +2242,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6a160d838ff8b4b4693ac20007e008c7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_AssetsPPU: 64
+  m_AssetsPPU: 32
   m_RefResolutionX: 320
   m_RefResolutionY: 180
   m_UpscaleRT: 0
@@ -2509,7 +2509,7 @@ GameObject:
   - component: {fileID: 627060804}
   - component: {fileID: 627060808}
   - component: {fileID: 627060809}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Bald Pirate
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2644,7 +2644,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2023028160}
-  - {fileID: 947087539}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &627060808
@@ -2680,9 +2679,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e9ad26b42d850f449cb0efa776101d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxHealth: 20
+  currentHealth: 20
+  isDead: 0
+  damagePreventTime: 0.15
   NPCData: {fileID: 11400000, guid: 7b3fb3521e896294a8e2807fc407fba7, type: 2}
   surpriseSign: {fileID: 947087538}
   surpriseTime: 0.5
+  surpriseOffset: {x: 0.2, y: 0.5}
   state: 0
   bombKickForce: 300
   bombKickYAddForce: 0.1
@@ -3084,11 +3088,11 @@ Transform:
   m_GameObject: {fileID: 947087538}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.37, y: 0.58, z: 0}
+  m_LocalPosition: {x: -1.24, y: -1.8400002, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 627060807}
+  m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &947087540
 Animator:
@@ -5586,6 +5590,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3171165d1dd45954383fc66674ab0f45, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxHealth: 20
+  currentHealth: 20
+  isDead: 0
+  damagePreventTime: 0
   moveSpeed: 5
   jumpForce: 12
   groundLayer:
@@ -7050,7 +7058,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.023721218, y: -0.20260823}
+  m_Offset: {x: -0.046948433, y: -0.20260823}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -7061,7 +7069,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 4.797884, y: 0.18959022}
+  m_Size: {x: 3.048071, y: 0.18959022}
   m_EdgeRadius: 0
 --- !u!4 &2034919461 stripped
 Transform:
@@ -7084,6 +7092,7 @@ GameObject:
   - component: {fileID: 2065101681}
   - component: {fileID: 2065101680}
   - component: {fileID: 2065101682}
+  - component: {fileID: 2065101683}
   m_Layer: 0
   m_Name: CM
   m_TagString: Untagged
@@ -7113,7 +7122,7 @@ MonoBehaviour:
   m_Follow: {fileID: 1531804550}
   m_Lens:
     FieldOfView: 60
-    OrthographicSize: 3.03
+    OrthographicSize: 4.06
     NearClipPlane: 0.3
     FarClipPlane: 1000
     Dutch: 0
@@ -7139,7 +7148,7 @@ Transform:
   m_GameObject: {fileID: 2065101678}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.0000002682209, y: -0.00000017881393, z: -10}
+  m_LocalPosition: {x: 0.0000004172325, y: -0.00000023841858, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -7158,6 +7167,29 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a8a05de0ac134f4f9d01bef6b9da077, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2065101683
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2065101678}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00b2d199b96b516448144ab30fb26aed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ApplyAfter: 2
+  m_ChannelMask: 1
+  m_Gain: 1
+  m_Use2DDistance: 1
+  m_UseCameraSpace: 1
+  m_ReactionSettings:
+    m_SecondaryNoise: {fileID: 0}
+    m_AmplitudeGain: 1
+    m_FrequencyGain: 1
+    m_Duration: 1
+    m_NoiseOffsets: {x: 903.8672, y: 8.442749, z: -775.9535}
 --- !u!1 &2068915332
 GameObject:
   m_ObjectHideFlags: 0
@@ -7750,3 +7782,4 @@ SceneRoots:
   - {fileID: 699011323}
   - {fileID: 2065101681}
   - {fileID: 627060807}
+  - {fileID: 947087539}

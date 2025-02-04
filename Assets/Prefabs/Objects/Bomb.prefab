@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 4227554042719914696}
   - component: {fileID: 8741110140841711143}
   - component: {fileID: 4032108701973193148}
+  - component: {fileID: -3836785283007113936}
   m_Layer: 8
   m_Name: Bomb
   m_TagString: Untagged
@@ -186,10 +187,64 @@ MonoBehaviour:
   delay: 3
   explosionRadius: 1.05
   explosionForce: 50
-  explosionDamage: 50
+  explosionDamage: 10
   affectedLayers:
     serializedVersion: 2
-    m_Bits: 4294967295
-  explosionOffset: {x: 0.03, y: -0.28}
+    m_Bits: 4055
+  explosionOffset: {x: 0.03, y: -0.5}
   addBombForce: 500
+  damageForce: 1000
   hasExploded: 0
+--- !u!114 &-3836785283007113936
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4067006494846360134}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 180ecf9b41d478f468eb3e9083753217, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_ImpulseDefinition:
+    m_ImpulseChannel: 1
+    m_ImpulseShape: 3
+    m_CustomImpulseShape:
+      serializedVersion: 2
+      m_Curve: []
+      m_PreInfinity: 2
+      m_PostInfinity: 2
+      m_RotationOrder: 4
+    m_ImpulseDuration: 0.2
+    m_ImpulseType: 0
+    m_DissipationRate: 0.97
+    m_RawSignal: {fileID: 0}
+    m_AmplitudeGain: 1
+    m_FrequencyGain: 1
+    m_RepeatMode: 0
+    m_Randomize: 1
+    m_TimeEnvelope:
+      m_AttackShape:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      m_DecayShape:
+        serializedVersion: 2
+        m_Curve: []
+        m_PreInfinity: 2
+        m_PostInfinity: 2
+        m_RotationOrder: 4
+      m_AttackTime: 0
+      m_SustainTime: 0.2
+      m_DecayTime: 0.7
+      m_ScaleWithImpact: 1
+      m_HoldForever: 0
+    m_ImpactRadius: 100
+    m_DirectionMode: 0
+    m_DissipationMode: 2
+    m_DissipationDistance: 100
+    m_PropagationSpeed: 200
+  m_DefaultVelocity: {x: 0, y: 0.1, z: 0}

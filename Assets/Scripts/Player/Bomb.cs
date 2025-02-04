@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using Cinemachine;
+using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -10,7 +11,7 @@ public class Bomb : MonoBehaviour
     [SerializeField] private float delay = 3f;
     [SerializeField] private float explosionRadius = 5f;    
     [SerializeField] private float explosionForce = 700f;
-    [SerializeField] private int explosionDamage = 50;
+    [SerializeField] private int explosionDamage = 10;
     [SerializeField] private LayerMask affectedLayers;
     [SerializeField] private Vector2 explosionOffset = Vector2.zero;
     [SerializeField] private float addBombForce = 700f;
@@ -19,6 +20,7 @@ public class Bomb : MonoBehaviour
     private Animator animator;
     private Rigidbody2D rb;
     private CapsuleCollider2D capsuleCollider;
+    private CinemachineImpulseSource impulseSource;
 
     void Awake()
     {
@@ -26,6 +28,7 @@ public class Bomb : MonoBehaviour
         StartCoroutine(ExplodeAfterDelay());
         animator = GetComponent<Animator>();
         capsuleCollider = GetComponent<CapsuleCollider2D>();
+        impulseSource = GetComponent<CinemachineImpulseSource>();
     }
 
     void OnEnable()
@@ -49,6 +52,7 @@ public class Bomb : MonoBehaviour
     {
         if (hasExploded) return;
         hasExploded = true;
+        impulseSource.GenerateImpulse();
         animator.SetBool("Explored", true);
 
         Vector2 explosionCenter = (Vector2)transform.position + explosionOffset;
@@ -61,6 +65,7 @@ public class Bomb : MonoBehaviour
             if (hit.gameObject == gameObject) continue;
 
             Rigidbody2D rb = hit.GetComponent<Rigidbody2D>();
+            IDamagable damagable = hit.GetComponent<IDamagable>();
             
             if (rb != null)
             {
@@ -81,13 +86,10 @@ public class Bomb : MonoBehaviour
                 }
             }
 
-            
-            //Health health = hit.GetComponent<Health>();
-            //if (health != null)
-            //{
-            //    float damage = Mathf.Lerp(explosionDamage, 0, distance / explosionRadius);
-            //    health.TakeDamage((int)damage);
-            //}
+            if(damagable != null)
+            {
+                damagable.TakeDamage(explosionDamage);
+            }
         }
     }
     public bool IsExploded() => hasExploded;

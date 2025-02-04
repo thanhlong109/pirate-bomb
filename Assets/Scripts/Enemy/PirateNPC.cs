@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
-public abstract class PirateNPC : MonoBehaviour
+public abstract class PirateNPC : IDamagable
 {
     [SerializeField] protected PirateNPCData NPCData;
     [SerializeField] private GameObject surpriseSign;
@@ -14,7 +14,6 @@ public abstract class PirateNPC : MonoBehaviour
     public NPC_STATES state = NPC_STATES.IDLE;
     private GameObject bombDetected;
     private System.Action onReachBomb;
-    private Animator animator;
     private int currentDirection = 1;
     
     public abstract void HandleBomb(GameObject bomb);
@@ -29,10 +28,15 @@ public abstract class PirateNPC : MonoBehaviour
         yield return new WaitForSeconds(surpriseTime);
         surpriseSign.SetActive(false);
     }
+
+    private new void Awake()
+    {
+        base.Awake();
+    }
+
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
-        animator = GetComponent<Animator>();
     }
 
     private void Update()
@@ -67,8 +71,8 @@ public abstract class PirateNPC : MonoBehaviour
     }
 
     private void MoveToBomb()
-    {
-
+    {   
+ 
         float distance = Vector2.Distance(transform.position, bombDetected.transform.position);
 
         if (distance > 0.1f)

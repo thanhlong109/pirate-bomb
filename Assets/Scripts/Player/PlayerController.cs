@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
-public class PlayerController : MonoBehaviour
+public class PlayerController : IDamagable
 {
     [Header("Settings")]
     [SerializeField] private float moveSpeed = 8f;
@@ -25,15 +25,14 @@ public class PlayerController : MonoBehaviour
     private bool jumpPressed;
     private bool bombPressed;
     private bool canPlaceBomb = true;
-    private Animator animator;
 
     private bool isCharging = false;
     private float chargeTimer = 0f;
 
-    private void Awake()
+    private new void Awake()
     {
+        base.Awake();
         rb = GetComponent<Rigidbody2D>();
-        animator = GetComponent<Animator>();
     }
 
     private void Update()
@@ -159,5 +158,10 @@ public class PlayerController : MonoBehaviour
         scale.x *= -1;
         currentDirection *= -1;
         transform.localScale = scale;
+    }
+
+    public override void OnDead()
+    {
+        Debug.Log("Dead");
     }
 }
