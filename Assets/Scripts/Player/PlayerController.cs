@@ -37,6 +37,7 @@ public class PlayerController : IDamagable
 
     private void Update()
     {
+        if(isDead) return;
         GetInput();
         FlipCharacter();
         UpdateAnimations();
@@ -51,6 +52,7 @@ public class PlayerController : IDamagable
 
     private void FixedUpdate()
     {
+        if (isDead) return;
         CheckGrounded();
         HandleMovement();
         HandleJump();

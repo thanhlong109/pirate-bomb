@@ -41,6 +41,7 @@ public abstract class PirateNPC : IDamagable
 
     private void Update()
     {
+        if(isDead) return;
         UpdateAnimations();
         FlipCharacter();
     }
@@ -52,6 +53,7 @@ public abstract class PirateNPC : IDamagable
 
     private void FixedUpdate()
     {
+        if(isDead) return;
         switch (state)
         {
             case NPC_STATES.MOVE_TO_BOMB:

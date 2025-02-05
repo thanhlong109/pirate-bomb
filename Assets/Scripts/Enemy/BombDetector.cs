@@ -18,16 +18,18 @@ public class BombDetector : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if(NPC.state == NPC_STATES.IDLE)
+        if (!NPC.IsDead)
         {
-            NPC.ShowSurprise();
-            StartCoroutine(HandleBombWithGap(other));
+            if (NPC.state == NPC_STATES.IDLE)
+            {
+                NPC.ShowSurprise();
+                StartCoroutine(HandleBombWithGap(other));
+            }
+            else
+            {
+                NPC.HandleBomb(other.gameObject);
+            }
         }
-        else
-        {
-            NPC.HandleBomb(other.gameObject);
-        }
-        
     }
 
     private IEnumerator HandleBombWithGap(Collider2D other)

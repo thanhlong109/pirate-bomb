@@ -6,9 +6,10 @@ public abstract class IDamagable : MonoBehaviour
 {
     [SerializeField] protected int maxHealth = 20;
     [SerializeField] protected int currentHealth = 20;
-    protected Animator animator;
     [SerializeField] protected bool isDead = false;
     [SerializeField] protected float damagePreventTime = 0.15f;
+    protected Animator animator;
+    protected new Collider2D collider2D;
 
     private bool isPreventDamage = false;
 
@@ -16,6 +17,7 @@ public abstract class IDamagable : MonoBehaviour
     {
         currentHealth = maxHealth;
         animator = GetComponent<Animator>();
+        collider2D = GetComponent<Collider2D>();
     }
     public void TakeDamage(int damage)
     {
@@ -33,6 +35,8 @@ public abstract class IDamagable : MonoBehaviour
             }
         }
     }
+
+    public bool IsDead => isDead;
 
     IEnumerator WaitToDamagable()
     {
