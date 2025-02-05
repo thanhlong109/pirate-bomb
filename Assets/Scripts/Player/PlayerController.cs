@@ -5,6 +5,8 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody2D))]
 public class PlayerController : IDamagable
 {
+    public static PlayerController Instance { get; private set; }
+
     [Header("Settings")]
     [SerializeField] private float moveSpeed = 8f;
     [SerializeField] private float jumpForce = 12f;
@@ -32,6 +34,12 @@ public class PlayerController : IDamagable
     private new void Awake()
     {
         base.Awake();
+        if (Instance != null)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
         rb = GetComponent<Rigidbody2D>();
     }
 

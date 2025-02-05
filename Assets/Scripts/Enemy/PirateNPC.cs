@@ -9,25 +9,11 @@ public abstract class PirateNPC : IDamagable
     [SerializeField] private GameObject surpriseSign;
     [SerializeField] public float surpriseTime = 0.25f;
     [SerializeField] public Vector2 surpriseOffset;
+    [SerializeField] private DamageDealer damageDealer;
 
     protected Rigidbody2D rb;
     public NPC_STATES state = NPC_STATES.IDLE;
-    private GameObject bombDetected;
-    private System.Action onReachBomb;
     private int currentDirection = 1;
-    
-    public abstract void HandleBomb(GameObject bomb);
-    public void ShowSurprise()
-    {
-        surpriseSign.transform.position = new Vector3(transform.position.x + surpriseOffset.x, transform.position.y + surpriseOffset.y);
-        surpriseSign.SetActive(true);
-        StartCoroutine(HideSurprise());
-    }
-    IEnumerator HideSurprise()
-    {
-        yield return new WaitForSeconds(surpriseTime);
-        surpriseSign.SetActive(false);
-    }
 
     private new void Awake()
     {
@@ -37,6 +23,7 @@ public abstract class PirateNPC : IDamagable
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        damageDealer = GetComponentInChildren<DamageDealer>();
     }
 
     private void Update()
@@ -54,32 +41,64 @@ public abstract class PirateNPC : IDamagable
     private void FixedUpdate()
     {
         if(isDead) return;
-        switch (state)
+    }
+
+    public int AttackDamage => NPCData.AttackDamage;
+    public abstract void HandleBomb(GameObject bomb);
+    public void ChasePlayer(System.Action onReachPlayer)
+    {
+        float distance = Vector2.Distance(transform.position, PlayerController.Instance.transform.position);
+
+        if (distance > NPCData.AttackRange)
         {
-            case NPC_STATES.MOVE_TO_BOMB:
-                {
-                    MoveToBomb();
-                    break;
-                }
-            default: break;
+            float direction = Mathf.Sign(PlayerController.Instance.transform.position.x - transform.position.x);
+            rb.velocity = new Vector2(direction * NPCData.Speed, rb.velocity.y);
+        }
+        else
+        {
+            onReachPlayer.Invoke();
         }
     }
-
-    protected void MoveToBomb(GameObject bomb, System.Action onReachBomb)
+    public void StartAttackPlayer()
     {
-        bombDetected = bomb;
-        this.onReachBomb = onReachBomb;
-        state = NPC_STATES.MOVE_TO_BOMB;
+        animator.SetBool("IsAttack", true);
     }
 
-    private void MoveToBomb()
+    private void ActiveSensor()
+    {
+        damageDealer.SetActive(true);
+    }
+
+    private void InactiveSensor()
+    {
+        damageDealer.SetActive(false);
+        animator.SetBool("IsAttack", false);
+    }
+
+    public void AttackPlayer()
+    {
+        PlayerController.Instance.TakeDamage(NPCData.AttackDamage);
+    }
+
+    public void ShowSurprise()
+    {
+        surpriseSign.transform.position = new Vector3(transform.position.x + surpriseOffset.x, transform.position.y + surpriseOffset.y);
+        surpriseSign.SetActive(true);
+        StartCoroutine(HideSurprise());
+    }
+    IEnumerator HideSurprise()
+    {
+        yield return new WaitForSeconds(surpriseTime);
+        surpriseSign.SetActive(false);
+    }
+
+    public void MoveToBomb(GameObject bomb, System.Action onReachBomb)
     {   
- 
-        float distance = Vector2.Distance(transform.position, bombDetected.transform.position);
+        float distance = Vector2.Distance(transform.position, bomb.transform.position);
 
         if (distance > 0.1f)
         {
-            float direction = Mathf.Sign(bombDetected.transform.position.x - transform.position.x);
+            float direction = Mathf.Sign(bomb.transform.position.x - transform.position.x);
             rb.velocity = new Vector2(direction * NPCData.Speed, rb.velocity.y);
         }
         else
@@ -107,9 +126,11 @@ public abstract class PirateNPC : IDamagable
         transform.localScale = scale;
     }
 
+    public bool CanAttack => NPCData.canAttack;
+
 }
 
 public enum NPC_STATES
 {
-    IDLE, MOVE_TO_BOMB
+    IDLE, BOOM_DETECTED, PLAYER_DETECTED
 }

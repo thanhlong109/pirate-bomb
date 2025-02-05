@@ -15,6 +15,7 @@ public class PirateNPCData : ScriptableObject
     [Header("Action")]
     public bool canAttack;
     public int AttackDamage;
+    public float AttackRange;
 
 
     [Header("Sound & Effect")]

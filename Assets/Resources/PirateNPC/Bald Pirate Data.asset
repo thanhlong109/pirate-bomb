@@ -19,4 +19,5 @@ MonoBehaviour:
   JumpForce: 5
   canAttack: 1
   AttackDamage: 0
+  AttackRange: 1
   AttackSound: {fileID: 0}

@@ -17,8 +17,8 @@ TagManager:
   - Player
   - BombDetetor
   - Pirate
-  - 
-  - 
+  - PlayerDetector
+  - DamageDealer
   - 
   - 
   - 
@@ -46,6 +46,9 @@ TagManager:
     locked: 0
   - name: Ground
     uniqueID: 776643275
+    locked: 0
+  - name: Player
+    uniqueID: 2926557249
     locked: 0
   - name: Default
     uniqueID: 0
