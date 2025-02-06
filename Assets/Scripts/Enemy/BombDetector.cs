@@ -19,11 +19,11 @@ public class BombDetector : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (NPC.IsDead) return;
-        NPC.SetAction(NPC_ACTION.BOOM_DETECTED, collision.gameObject);
+        NPC.AddTarget(collision.GetComponent<ITargetable>());
     }
 
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        NPC.SetAction(NPC_ACTION.FREE, null, true);   
-    }
+    //private void OnTriggerExit2D(Collider2D collision)
+    //{
+    //    NPC.SetAction(NPC_ACTION.FREE, null, true);   
+    //}
 }

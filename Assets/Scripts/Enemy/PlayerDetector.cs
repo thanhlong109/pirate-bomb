@@ -15,11 +15,11 @@ public class PlayerDetector : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (PlayerController.Instance.IsDead || !pirateNPC.CanAttack) return;
-        pirateNPC.SetAction(NPC_ACTION.PLAYER_DETECTED,collision.gameObject);
+        pirateNPC.AddTarget(collision.GetComponent<ITargetable>());
     }
     private void OnTriggerExit2D(Collider2D collision)
-    {   
+    {
         if (!pirateNPC.CanAttack) return;
-        pirateNPC.SetAction(NPC_ACTION.FREE,null,true);
+        pirateNPC.RemoveTarget(collision.GetComponent<ITargetable>());
     }
 }

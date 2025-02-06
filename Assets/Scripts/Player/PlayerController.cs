@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
-public class PlayerController : MonoBehaviour, IDamagable
+public class PlayerController : MonoBehaviour, IDamagable, ITargetable
 {
     public static PlayerController Instance { get; private set; }
 
@@ -15,6 +15,7 @@ public class PlayerController : MonoBehaviour, IDamagable
     [SerializeField] private float minThrowForce = 0f;
     [SerializeField] private float maxThrowForce = 10f;
     [SerializeField] private float chargeTime = 2f;
+    [SerializeField] private int priority = 1;
 
     [Header("References")]
     [SerializeField] private Transform groundCheck;
@@ -87,6 +88,12 @@ public class PlayerController : MonoBehaviour, IDamagable
     public int CurrentHealth => currentHealth;
 
     public bool IsDead => isDead;
+
+    public int Priority => priority;
+
+    public GameObject GameObject => gameObject;
+
+    public NPC_ACTION Action => NPC_ACTION.PLAYER_DETECTED;
 
     private void CheckGrounded()
     {

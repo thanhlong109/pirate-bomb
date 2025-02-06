@@ -5,7 +5,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using static UnityEditor.Experimental.GraphView.GraphView;
 
-public class Bomb : MonoBehaviour
+public class Bomb : MonoBehaviour, ITargetable
 {
 
     [SerializeField] private float delay = 3f;
@@ -15,12 +15,20 @@ public class Bomb : MonoBehaviour
     [SerializeField] private LayerMask affectedLayers;
     [SerializeField] private Vector2 explosionOffset = Vector2.zero;
     [SerializeField] private float addBombForce = 700f;
+    [SerializeField] private int priority = 5;
+    [SerializeField] private NPC_ACTION action = NPC_ACTION.BOOM_DETECTED;
 
     [SerializeField] private bool hasExploded = false;  
     private Animator animator;
     private Rigidbody2D rb;
     private CapsuleCollider2D capsuleCollider;
     private CinemachineImpulseSource impulseSource;
+
+    public int Priority => priority;
+
+    public GameObject GameObject => gameObject;
+
+    public NPC_ACTION Action => action;
 
     void Awake()
     {

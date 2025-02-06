@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
@@ -23,10 +24,10 @@ public abstract class PirateNPC : MonoBehaviour, IDamagable
 
     protected Rigidbody2D rb;
     public NPC_STATES currentState = NPC_STATES.SLEEPING;
-    public NPC_ACTION currentAction = NPC_ACTION.FREE;
     private int currentDirection = 1;
 
-    private GameObject currentTarget = null;
+    private ITargetable currentTarget = null;
+    private List<ITargetable> targets = new List<ITargetable>();
 
     private  void Awake()
     {
@@ -56,20 +57,36 @@ public abstract class PirateNPC : MonoBehaviour, IDamagable
     private void FixedUpdate()
     {
         if(isDead || currentState == NPC_STATES.SLEEPING) return;
-        switch (currentAction)
+
+        // take next target
+        if(currentTarget == null && targets.Count > 0 )
+        {
+            currentTarget = targets.OrderByDescending(t => t.Priority).FirstOrDefault();
+            if(currentTarget != null && currentTarget.Action != NPC_ACTION.PLAYER_DETECTED)
+            {
+                targets.Remove(currentTarget);
+            }
+        }
+        if (currentTarget == null) return;
+        if (!currentTarget.GameObject.activeSelf)
+        {
+            currentTarget = null;
+            return;
+        }
+        switch (currentTarget.Action)
         {
             case NPC_ACTION.FREE:
                 {
-                    currentTarget = null;
                     break;
                 }
             case NPC_ACTION.BOOM_DETECTED:
                 {
                     if(currentTarget != null)
                     {
-                        MoveToBomb(currentTarget, () =>
+                        MoveToBomb(currentTarget.GameObject, () =>
                         {
-                            HandleBomb(currentTarget);
+                            HandleBomb(currentTarget.GameObject);
+                            currentTarget = null;
                         });
                     }
                     break;
@@ -85,12 +102,40 @@ public abstract class PirateNPC : MonoBehaviour, IDamagable
         }
     }
 
+    public void AddTarget(ITargetable target)
+    {
+        if(currentState == NPC_STATES.SLEEPING)
+        {
+            ShowSurprise();
+        }
+        
+        if(currentTarget != null && currentTarget.Priority < target.Priority)
+        {
+            currentTarget = target;
+        }
+        else
+        {
+            targets.Add(target);
+        }
+    }
 
+    public void RemoveTarget(ITargetable target)
+    {
+        if (targets.Contains(target))
+        {
+            targets.Remove(target);
+        }
+        if(currentTarget == target) currentTarget = null;
+    }
 
     public int AttackDamage => NPCData.AttackDamage;
     public abstract void HandleBomb(GameObject bomb);
     public void ChasePlayer(System.Action onReachPlayer)
     {
+        if (PlayerController.Instance.IsDead)
+        {
+            RemoveTarget(currentTarget); return;
+        }
         float distance = Vector2.Distance(transform.position, PlayerController.Instance.transform.position);
 
         if (distance > NPCData.AttackRange)
@@ -106,7 +151,7 @@ public abstract class PirateNPC : MonoBehaviour, IDamagable
 
     private void FallSleep()
     {
-        if(currentAction == NPC_ACTION.FREE)
+        if(currentTarget == null)
         {
             currentState = NPC_STATES.SLEEPING;
         }
@@ -132,40 +177,17 @@ public abstract class PirateNPC : MonoBehaviour, IDamagable
         PlayerController.Instance.TakeDamage(NPCData.AttackDamage);
     }
 
-    public void ShowSurprise(NPC_ACTION action)
+    public void ShowSurprise()
     {
         surpriseSign.transform.position = new Vector3(transform.position.x + surpriseOffset.x, transform.position.y + surpriseOffset.y);
         surpriseSign.SetActive(true);
-        StartCoroutine(HideSurprise(action));
+        StartCoroutine(HideSurprise());
     }
-    IEnumerator HideSurprise(NPC_ACTION action)
+    IEnumerator HideSurprise()
     {
         yield return new WaitForSeconds(surpriseTime);
         surpriseSign.SetActive(false);
-        currentAction = action;
         currentState = NPC_STATES.AWAKENED;
-    }
-
-    public void SetAction(NPC_ACTION action, GameObject target)
-    {
-        SetAction(action, target, false);
-    }
-    public void SetAction(NPC_ACTION action,GameObject target, bool isOverride)
-    {
-        
-        if(currentAction != action)
-        {
-            if (currentAction > action && !isOverride) return;
-            if(currentState == NPC_STATES.SLEEPING)
-            {
-                ShowSurprise(action);
-            }
-            else
-            {
-                currentAction = action;
-            }
-            currentTarget = target;
-        }
     }
 
     public void MoveToBomb(GameObject bomb, System.Action onReachBomb)
