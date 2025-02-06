@@ -12,12 +12,6 @@ public class BaldPirateNPC : PirateNPC
             KickTheBomb(bomb);
         });
     }
-
-    public override void OnDead()
-    {
-        Debug.Log("NPC dead");
-    }
-
     private void KickTheBomb(GameObject bomb)
     {
         Vector2 direction = bomb.transform.position - transform.position;

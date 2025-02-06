@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))]
-public class PlayerController : IDamagable
+public class PlayerController : MonoBehaviour, IDamagable
 {
     public static PlayerController Instance { get; private set; }
 
@@ -20,6 +20,13 @@ public class PlayerController : IDamagable
     [SerializeField] private Transform groundCheck;
     [SerializeField] private GameObject chargeBar;
 
+    [Header("Health Settings")]
+    [SerializeField] protected int maxHealth = 20;
+    [SerializeField] protected int currentHealth = 20;
+    [SerializeField] protected bool isDead = false;
+    [SerializeField] protected float damagePreventTime = 0.15f;
+    private bool isPreventDamage = false;
+
     private Rigidbody2D rb;
     private bool isGrounded;
     private int currentDirection = 1;
@@ -27,13 +34,13 @@ public class PlayerController : IDamagable
     private bool jumpPressed;
     private bool bombPressed;
     private bool canPlaceBomb = true;
+    private Animator animator;
 
     private bool isCharging = false;
     private float chargeTimer = 0f;
 
-    private new void Awake()
+    private  void Awake()
     {
-        base.Awake();
         if (Instance != null)
         {
             Destroy(gameObject);
@@ -41,6 +48,8 @@ public class PlayerController : IDamagable
         }
         Instance = this;
         rb = GetComponent<Rigidbody2D>();
+        currentHealth = maxHealth;
+        animator = GetComponent<Animator>();
     }
 
     private void Update()
@@ -74,6 +83,10 @@ public class PlayerController : IDamagable
         jumpPressed = GameInputManager.Instance.IsJumpPressed;
         bombPressed = GameInputManager.Instance.IsBombPressed;
     }
+
+    public int CurrentHealth => currentHealth;
+
+    public bool IsDead => isDead;
 
     private void CheckGrounded()
     {
@@ -170,8 +183,33 @@ public class PlayerController : IDamagable
         transform.localScale = scale;
     }
 
-    public override void OnDead()
+    public void TakeDamage(int damage)
     {
-        Debug.Log("Dead");
+        if (!isDead && !isPreventDamage)
+        {
+            animator.SetBool("TakeDamage", true);
+            currentHealth -= damage;
+            isPreventDamage = true;
+            StartCoroutine(WaitToDamagable());
+            if (currentHealth <= 0)
+            {
+                OnDead();
+                isDead = true;
+                animator.SetBool("IsDead", true);
+            }
+        }
+    }
+
+    IEnumerator WaitToDamagable()
+    {
+        yield return new WaitForSeconds(damagePreventTime);
+        animator.SetBool("TakeDamage", false);
+        isPreventDamage = false;
+    }
+
+    public void OnDead()
+    {
+        Debug.Log("Player dead");
+        isDead = true;
     }
 }

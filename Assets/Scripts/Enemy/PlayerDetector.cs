@@ -14,30 +14,12 @@ public class PlayerDetector : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (!pirateNPC.CanAttack) return;
-        if (pirateNPC.state == NPC_STATES.IDLE)
-        {
-            pirateNPC.ShowSurprise();
-            StartCoroutine(DelayToAttackPlayer());
-        }
-        
+        if (PlayerController.Instance.IsDead || !pirateNPC.CanAttack) return;
+        pirateNPC.SetAction(NPC_ACTION.PLAYER_DETECTED,collision.gameObject);
     }
-
-    private IEnumerator DelayToAttackPlayer()
-    {
-        yield return new WaitForSeconds(pirateNPC.surpriseTime);
-        pirateNPC.state = NPC_STATES.PLAYER_DETECTED;
-    }
-    private void OnTriggerStay2D(Collider2D collision)
-    {
-        if(PlayerController.Instance.IsDead || !pirateNPC.CanAttack) return;
-        if (pirateNPC.state != NPC_STATES.PLAYER_DETECTED) return;
-        pirateNPC.ChasePlayer(() => { pirateNPC.StartAttackPlayer(); });
-    }
-
     private void OnTriggerExit2D(Collider2D collision)
     {   
         if (!pirateNPC.CanAttack) return;
-        pirateNPC.state = NPC_STATES.IDLE;
+        pirateNPC.SetAction(NPC_ACTION.FREE,null,true);
     }
 }

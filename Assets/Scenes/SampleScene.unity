@@ -2289,7 +2289,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.0000004172325, y: -0.00000023841858, z: -10}
+  m_LocalPosition: {x: 0.00000035762787, y: -0.00000023841858, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2780,16 +2780,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e9ad26b42d850f449cb0efa776101d3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 20
-  currentHealth: 20
-  isDead: 0
-  damagePreventTime: 0.15
   NPCData: {fileID: 11400000, guid: 7b3fb3521e896294a8e2807fc407fba7, type: 2}
   surpriseSign: {fileID: 947087538}
   surpriseTime: 0.5
   surpriseOffset: {x: 0.2, y: 0.5}
   damageDealer: {fileID: 0}
-  state: 0
+  maxHealth: 20
+  currentHealth: 20
+  isDead: 0
+  damagePreventTime: 0.15
+  currentState: 0
+  currentAction: 0
   bombKickForce: 300
   bombKickYAddForce: 0.1
 --- !u!4 &631081222 stripped
@@ -5117,7 +5118,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.024601698, y: -0.37517178}
+  m_Offset: {x: -0.031487703, y: -0.43025815}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -5128,7 +5129,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 3.669254, y: 0.24965644}
+  m_Size: {x: 5.611048, y: 0.13948369}
   m_EdgeRadius: 0
 --- !u!4 &1201973110 stripped
 Transform:
@@ -5782,10 +5783,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3171165d1dd45954383fc66674ab0f45, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 20
-  currentHealth: 20
-  isDead: 0
-  damagePreventTime: 0
   moveSpeed: 5
   jumpForce: 12
   groundLayer:
@@ -5797,6 +5794,10 @@ MonoBehaviour:
   chargeTime: 1
   groundCheck: {fileID: 1495319149}
   chargeBar: {fileID: 1109602120}
+  maxHealth: 20
+  currentHealth: 20
+  isDead: 0
+  damagePreventTime: 0
 --- !u!95 &1531804555
 Animator:
   serializedVersion: 5
@@ -7250,7 +7251,7 @@ BoxCollider2D:
   m_IsTrigger: 1
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.046948433, y: -0.20260823}
+  m_Offset: {x: 0.008417726, y: -0.21979082}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0, y: 0}
@@ -7261,7 +7262,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 3.048071, y: 0.18959022}
+  m_Size: {x: 2.532593, y: 0.15522504}
   m_EdgeRadius: 0
 --- !u!4 &2034919461 stripped
 Transform:
@@ -7340,7 +7341,7 @@ Transform:
   m_GameObject: {fileID: 2065101678}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.0000004172325, y: -0.00000023841858, z: -10}
+  m_LocalPosition: {x: 0.00000035762787, y: -0.00000023841858, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
