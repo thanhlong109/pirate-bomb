@@ -75,8 +75,8 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: -132573029
+  m_SortingLayer: 1
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 85a1d9b6eadbf9e47a13f7876624547c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -193,7 +193,9 @@ MonoBehaviour:
     m_Bits: 4055
   explosionOffset: {x: 0.03, y: -0.5}
   addBombForce: 500
-  damageForce: 1000
+  priority: 5
+  action: 2
+  isExtinguished: 0
   hasExploded: 0
 --- !u!114 &-3836785283007113936
 MonoBehaviour:

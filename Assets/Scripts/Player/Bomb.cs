@@ -17,6 +17,7 @@ public class Bomb : MonoBehaviour, ITargetable
     [SerializeField] private float addBombForce = 700f;
     [SerializeField] private int priority = 5;
     [SerializeField] private NPC_ACTION action = NPC_ACTION.BOOM_DETECTED;
+    [SerializeField] private bool isExtinguished = false;
 
     [SerializeField] private bool hasExploded = false;  
     private Animator animator;
@@ -25,7 +26,7 @@ public class Bomb : MonoBehaviour, ITargetable
     private CinemachineImpulseSource impulseSource;
 
     public int Priority => priority;
-
+    public bool IsExtinguished => isExtinguished;
     public GameObject GameObject => gameObject;
 
     public NPC_ACTION Action => action;
@@ -53,7 +54,10 @@ public class Bomb : MonoBehaviour, ITargetable
     IEnumerator ExplodeAfterDelay()
     {
         yield return new WaitForSeconds(delay); 
-        Explode();
+        if(!isExtinguished)
+        {
+            Explode();
+        }
     }
 
     void Explode()
@@ -101,6 +105,11 @@ public class Bomb : MonoBehaviour, ITargetable
         }
     }
     public bool IsExploded() => hasExploded;
+    public void SetExtinguished(bool extinguished)
+    {
+        isExtinguished = extinguished;
+        animator.SetBool("IsExtinguished", isExtinguished);
+    }
 
     void ReturnToPool()
     {

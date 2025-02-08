@@ -12,26 +12,24 @@ public abstract class PirateNPC : MonoBehaviour, IDamagable
     [SerializeField] public Vector2 surpriseOffset;
     [SerializeField] private DamageDealer damageDealer;
 
-    [Header("NPC Health Settings")]
-    [SerializeField] protected int maxHealth = 20;
-    [SerializeField] protected int currentHealth = 20;
+    [Header("NPC Health Info")]
+    [SerializeField] private int currentHealth = 20;
     [SerializeField] protected bool isDead = false;
     [SerializeField] protected float damagePreventTime = 0.15f;
     private bool isPreventDamage = false;
 
     protected Animator animator;
 
-
     protected Rigidbody2D rb;
     public NPC_STATES currentState = NPC_STATES.SLEEPING;
-    private int currentDirection = 1;
+    protected int currentDirection = 1;
 
     private ITargetable currentTarget = null;
     private List<ITargetable> targets = new List<ITargetable>();
 
-    private  void Awake()
+    protected  void Awake()
     {
-        currentHealth = maxHealth;
+        currentHealth = NPCData.Health;
         animator = GetComponent<Animator>();
     }
 

@@ -34,6 +34,7 @@ public class BombPool : MonoBehaviour
         if (bombPool.Count > 0)
         {
             GameObject bomb = bombPool.Dequeue();
+            bomb.GetComponent<Bomb>()?.SetExtinguished(false);
             bomb.transform.position = position;
             bomb.SetActive(true);
             return bomb;

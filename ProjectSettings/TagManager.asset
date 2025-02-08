@@ -53,6 +53,9 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Bomb
+    uniqueID: 4162394267
+    locked: 0
   - name: Light
     uniqueID: 3067592185
     locked: 0
