@@ -23,14 +23,16 @@ public abstract class PirateNPC : MonoBehaviour, IDamagable
     protected Rigidbody2D rb;
     public NPC_STATES currentState = NPC_STATES.SLEEPING;
     protected int currentDirection = 1;
+    protected new Collider2D collider2D;
 
-    private ITargetable currentTarget = null;
+    protected ITargetable currentTarget = null;
     private List<ITargetable> targets = new List<ITargetable>();
 
     protected  void Awake()
     {
         currentHealth = NPCData.Health;
         animator = GetComponent<Animator>();
+        collider2D = GetComponent<Collider2D>();
     }
 
     void Start()
@@ -81,11 +83,7 @@ public abstract class PirateNPC : MonoBehaviour, IDamagable
                 {
                     if(currentTarget != null)
                     {
-                        MoveToBomb(currentTarget.GameObject, () =>
-                        {
-                            HandleBomb(currentTarget.GameObject);
-                            currentTarget = null;
-                        });
+                        HandleBomb(currentTarget.GameObject);
                     }
                     break;
                 }
@@ -190,7 +188,7 @@ public abstract class PirateNPC : MonoBehaviour, IDamagable
 
     public void MoveToBomb(GameObject bomb, System.Action onReachBomb)
     {
-        float distance = Vector2.Distance(transform.position, bomb.transform.position);
+        float distance = Mathf.Abs(bomb.transform.position.x - transform.position.x);
 
         if (distance > 0.1f)
         {
@@ -245,7 +243,7 @@ public abstract class PirateNPC : MonoBehaviour, IDamagable
         isPreventDamage = false;
     }
 
-    public void OnDead()
+    public virtual void OnDead()
     {
         Debug.Log("NPC dead");
         isDead = true;

@@ -13,8 +13,18 @@ public class CucumberNPC : PirateNPC
     }
     public override void HandleBomb(GameObject bomb)
     {
-        currentBomb = bomb.GetComponent<Bomb>();
-        StartBlowOutFuse(bomb);
+        MoveToBomb(currentTarget.GameObject, () =>
+        {
+            currentBomb = bomb.GetComponent<Bomb>();
+            StartBlowOutFuse(bomb);
+            currentTarget = null;
+        });
+    }
+
+    public override void OnDead()
+    {
+        base.OnDead();
+        ((CapsuleCollider2D)collider2D).direction = CapsuleDirection2D.Horizontal;
     }
 
     private void StartBlowOutFuse(GameObject bomb)

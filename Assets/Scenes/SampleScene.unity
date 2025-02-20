@@ -1767,7 +1767,7 @@ MonoBehaviour:
   NPCData: {fileID: 11400000, guid: f577edff99ee1e34c999ecb57408d54b, type: 2}
   surpriseSign: {fileID: 1112629289}
   surpriseTime: 0.25
-  surpriseOffset: {x: 0.2, y: 0.5}
+  surpriseOffset: {x: 0.2, y: 0.53}
   damageDealer: {fileID: 0}
   currentHealth: 20
   isDead: 0
@@ -1805,7 +1805,7 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: -0.008016452, y: -0.05290842}
+  m_Offset: {x: -0.008016452, y: -0.04}
   m_Size: {x: 0.400372, y: 0.95668316}
   m_Direction: 0
 --- !u!50 &256951332
@@ -2385,7 +2385,7 @@ Transform:
   m_GameObject: {fileID: 519420028}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.0000004172325, y: -0.00000023841858, z: -10}
+  m_LocalPosition: {x: 0.00000047683716, y: -0.00000023841858, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -7001,7 +7001,7 @@ Transform:
   m_GameObject: {fileID: 2065101678}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.0000004172325, y: -0.00000023841858, z: -10}
+  m_LocalPosition: {x: 0.00000047683716, y: -0.00000023841858, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -7505,7 +7505,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3939252602710401188, guid: 478d9fee3beb1194e8b85e7904f631d5, type: 3}
       propertyPath: m_Offset.y
-      value: -0.44635296
+      value: -0.43
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -7688,8 +7688,12 @@ PrefabInstance:
       value: Door
       objectReference: {fileID: 0}
     - target: {fileID: 9115643675801513132, guid: 87f6d7e8352f45a4e9bd3876c9f40325, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 9115643675801513132, guid: 87f6d7e8352f45a4e9bd3876c9f40325, type: 3}
       propertyPath: m_SortingLayer
-      value: -2
+      value: -3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -7754,7 +7758,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 9054587592677552128, guid: e2afc7b478f53a84e8e13fe9182dd394, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -7821,6 +7825,10 @@ PrefabInstance:
       propertyPath: m_Offset.x
       value: 0.012472391
       objectReference: {fileID: 0}
+    - target: {fileID: 8121398750487485026, guid: fd944476f98fb0d4ba5d8920d5457700, type: 3}
+      propertyPath: m_Offset.y
+      value: -0.45
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -7849,11 +7857,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8666600904068523638, guid: d9de7479cfdfe104bb338af1d07227c6, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.36894575
+      value: 0.577
       objectReference: {fileID: 0}
     - target: {fileID: 8666600904068523638, guid: d9de7479cfdfe104bb338af1d07227c6, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.3454914
+      value: 0.932
       objectReference: {fileID: 0}
     - target: {fileID: 8666600904068523638, guid: d9de7479cfdfe104bb338af1d07227c6, type: 3}
       propertyPath: m_LocalPosition.z
@@ -7944,6 +7952,10 @@ PrefabInstance:
     - target: {fileID: 2961788020997745473, guid: 6cf91d9f436d4da49aa1c546b172e798, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4516266455234786410, guid: 6cf91d9f436d4da49aa1c546b172e798, type: 3}
+      propertyPath: m_Offset.y
+      value: 0.01
       objectReference: {fileID: 0}
     - target: {fileID: 4516266455234786410, guid: 6cf91d9f436d4da49aa1c546b172e798, type: 3}
       propertyPath: m_Points.m_Paths.Array.data[0].Array.size
